@@ -52,3 +52,5 @@ Debes editar las siguientes variables al inicio del script `pipeline.sh`:
 ## Salida esperada
 
 ![Salida esperada](output.png)
+
+Hecho por Daniel Barbeyto Torres. 
