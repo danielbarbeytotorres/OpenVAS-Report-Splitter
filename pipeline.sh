@@ -4,16 +4,16 @@ set -euo pipefail
 START_TIME=$(date +%s)
 
 # ==== CONFIG ====
-TASK_ID="26112521-3873-4c18-b26c-e3b4e6260767" # Cambia esta TASK_ID por el de tu TASK!!
-FORMAT_ID="5057e5cc-b825-11e4-9d0e-28d24461215b"
-BASE_DIR="reports" # Cambia BASE_DIR por el directorio en el que quieres que se cree el directorio de REPORTS!!
+TASK_ID="${TASK_ID:-26112521-3873-4c18-b26c-e3b4e6260767}"
+FORMAT_ID="${FORMAT_ID:-5057e5cc-b825-11e4-9d0e-28d24461215b}"
+BASE_DIR="${BASE_DIR:-reports}"
 DATE_TAG=$(date +%F)
 REPORT_DIR="$BASE_DIR/$DATE_TAG"
 XML_FILE="$REPORT_DIR/report_$DATE_TAG.xml"
 JSON_FILE="$REPORT_DIR/report_$DATE_TAG.json"
 SPLIT_DIR="$REPORT_DIR/split_$DATE_TAG"
-GMP_USERNAME="admin" # Introduce aquí tu usuario de GMP (por defecto: admin).
-GMP_PASSWORD="INTRODUCE-AQUI-TU-PASSWD" # Introduce aqui tu contraseña de GMP.
+GMP_USERNAME="${GMP_USER:-admin}"
+GMP_PASSWORD="${GMP_PASSWORD:-INTRODUCE-AQUI-TU-PASSWD}"
 
 # =========================================================
 #  FASE 1: INICIO Y PREPARACIÓN DE DIRECTORIOS

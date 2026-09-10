@@ -1,0 +1,74 @@
+version: '3.9'
+
+services:
+  openvaspython:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: openvaspython-splitter
+    image: openvaspython:latest
+    
+    # Variables de entorno (configuración de la herramienta)
+    environment:
+      # ⚠️ IMPORTANTE: Configura estas variables según tu entorno OpenVAS
+      - TASK_ID=${TASK_ID:-12345678-1234-1234-1234-123456789012}
+      - FORMAT_ID=${FORMAT_ID:-5057e5cc-b825-11e4-9d0e-28d24461215b}
+      - GMP_USER=${GMP_USER:-admin}
+      - GMP_PASSWORD=${GMP_PASSWORD:-changeme}
+      - BASE_DIR=${BASE_DIR:-/reports}
+      - PYTHONUNBUFFERED=1
+    
+    # Volúmenes para persistencia
+    volumes:
+      # Montar el directorio de reportes del host en el contenedor
+      - reports_data:/app/reports
+      # Montar el socket de OpenVAS si está en el mismo host
+      - /run/openvas:/run/openvas:ro
+    
+    # Punto de acceso a red (si la herramienta necesita conectarse a OpenVAS remoto)
+    networks:
+      - openvaspython-net
+    
+    # Política de reinicio
+    restart: no
+    
+    # Límites de recursos (ajusta según tus necesidades)
+    deploy:
+      resources:
+        limits:
+          cpus: '2'
+          memory: 1G
+        reservations:
+          cpus: '0.5'
+          memory: 256M
+    
+    # Logs
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  # Opcional: Servicio OpenVAS (si quieres correr todo en Docker)
+  # openvas:
+  #   image: greenbone/openvas:latest
+  #   container_name: openvas-gvm
+  #   ports:
+  #     - "9392:9392"
+  #   networks:
+  #     - openvaspython-net
+  #   environment:
+  #     - USERNAME=admin
+  #     - PASSWORD=changeme
+  #   volumes:
+  #     - openvas_data:/data
+
+volumes:
+  reports_data:
+    driver: local
+  # openvas_data:
+  #   driver: local
+
+networks:
+  openvaspython-net:
+    driver: bridge
